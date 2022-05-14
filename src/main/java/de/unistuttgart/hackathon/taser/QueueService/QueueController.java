@@ -1,5 +1,7 @@
 package de.unistuttgart.hackathon.taser.QueueService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import javax.annotation.PostConstruct;
 public class QueueController {
 
     private QueueService queueService;
+    private Logger logger = LoggerFactory.getLogger(QueueController.class);
 
     @PostConstruct
     public void init(){
@@ -27,6 +30,7 @@ public class QueueController {
      */
     @PostMapping("/queue/create/{identifier}")
     public void createQueue(@PathVariable final String identifier) {
+        logger.info("create Queue with identifier (queueNumber):" + identifier);
         if (queueService.isIdentifierUsed(identifier)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Queue with ID %s already exists!",
                     identifier));
