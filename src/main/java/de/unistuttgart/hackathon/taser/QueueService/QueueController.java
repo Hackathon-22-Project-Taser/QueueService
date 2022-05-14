@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,8 +44,8 @@ public class QueueController {
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/store/{identifier}")
-    public void storeVote(@PathVariable final String identifier) {
-
+    public void storeVote(@PathVariable final String identifier, @RequestBody final Vote vote) {
+        queueService.storeVote(identifier, vote);
     }
 
     /**
@@ -53,7 +54,6 @@ public class QueueController {
      */
     @PostMapping("/queue/flush/{identifier}")
     public void flushQueue(@PathVariable final String identifier){
-
+        queueService.flushQueue(identifier);
     }
-
 }

@@ -34,4 +34,34 @@ public class QueueService {
     public boolean isIdentifierUsed(final String identifier){
         return availableQueues.containsKey(identifier);
     }
+
+    /**
+     * Stores a given vote in the specified queue
+     * @param identifier of the queue, to store the vote
+     * @param vote to be stored in the queue
+     */
+    public void storeVote(final String identifier, final Vote vote) {
+        final Queue<Map<LocalDateTime, Vote>> queue = this.findQueue(identifier);
+        Map<LocalDateTime, Vote> map = new HashMap<>();
+        map.put(LocalDateTime.now(), vote);
+        queue.add(map);
+    }
+
+    /**
+     * Returns the queue of the given id
+     * @param identifier of the queue
+     * @return queue with the specified queue
+     */
+    private Queue<Map<LocalDateTime, Vote>> findQueue(final String identifier) {
+        return this.availableQueues.get(identifier);
+    }
+
+    /**
+     * Clears a queue with the given identifier
+     * @param identifier of the queue to be cleared
+     */
+    public void flushQueue(final String identifier) {
+        final Queue<Map<LocalDateTime, Vote>> queue = this.findQueue(identifier);
+        queue.clear();
+    }
 }
