@@ -21,18 +21,19 @@ public class QueueController {
     private Logger logger = LoggerFactory.getLogger(QueueController.class);
 
     @PostConstruct
-    public void init(){
+    public void init() {
         queueService = new QueueService();
     }
 
     /**
      * Creates a new Queue
+     *
      * @requires no queue with given identifier exists
      */
     @PostMapping("/queue/create/{identifier}")
     public void createQueue(@PathVariable final String identifier) {
         logger.info("create Queue with identifier (queueNumber):" + identifier);
-        if (queueService.isIdentifierUsed(identifier)){
+        if (queueService.isIdentifierUsed(identifier)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Queue with ID %s already exists!",
                     identifier));
         }
@@ -40,7 +41,19 @@ public class QueueController {
     }
 
     /**
+     * Deletes a Queue
+     *
+     * @requires a queue with given identifier
+     */
+    @DeleteMapping("/queue/delete/{identifier}")
+    public void deleteQueue(@PathVariable final String identifier) {
+        logger.info("delete Queue with identifier (queueNumber):" + identifier);
+        queueService.deleteQueue(identifier);
+    }
+
+    /**
      * Stores a vote of a student
+     *
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/store/{identifier}")
@@ -50,19 +63,29 @@ public class QueueController {
 
     /**
      * Empties the queue
+     *
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/flush/{identifier}")
-    public void flushQueue(@PathVariable final String identifier){
+    public void flushQueue(@PathVariable final String identifier) {
         queueService.flushQueue(identifier);
     }
 
     /**
+     * Empties the queues
+     */
+    @PostMapping("/queues/flush")
+    public void flushQueues() {
+        queueService.flushQueues();
+    }
+
+    /**
      * Empties the queue
+     *
      * @requires queue with the given identifier to exist
      */
     @GetMapping("/queue/getQueues")
-    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(@PathVariable final String identifier){
+    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(@PathVariable final String identifier) {
         return queueService.getQueues();
     }
 }

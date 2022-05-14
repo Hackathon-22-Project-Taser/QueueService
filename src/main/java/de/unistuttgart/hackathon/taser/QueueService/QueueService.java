@@ -27,6 +27,18 @@ public class QueueService {
     }
 
     /**
+     * Deletes a Queue paired to the given identifier
+     * @param identifier of the queue to delete
+     * @requires (isIdentifierUsed)
+     */
+    public void deleteQueue(final String identifier) {
+        if (this.isIdentifierUsed(identifier)) {
+            availableQueues.remove(identifier);
+        }
+    }
+
+
+    /**
      * Returns whether an identifier is already used
      * @param identifier to check for
      * @return whether the identifier is already used
@@ -63,6 +75,15 @@ public class QueueService {
     public void flushQueue(final String identifier) {
         final Queue<Map<LocalDateTime, Boolean>> queue = this.findQueue(identifier);
         queue.clear();
+    }
+
+    /**
+     * Clears all queues
+     */
+    public void flushQueues() {
+        for(Map.Entry<String,Queue<Map<LocalDateTime, Boolean>>> entry: this.availableQueues.entrySet()){
+            entry.getValue().clear();
+        }
     }
 
     /**
