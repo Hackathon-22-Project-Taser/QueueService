@@ -18,7 +18,7 @@ import java.util.Queue;
 public class QueueController {
 
     private QueueService queueService;
-    private Logger logger = LoggerFactory.getLogger(QueueController.class);
+    private final Logger logger = LoggerFactory.getLogger(QueueController.class);
 
     @PostConstruct
     public void init() {
