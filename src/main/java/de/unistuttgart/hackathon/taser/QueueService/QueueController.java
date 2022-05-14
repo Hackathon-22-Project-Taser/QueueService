@@ -18,7 +18,7 @@ import java.util.Queue;
 public class QueueController {
 
     private QueueService queueService;
-    private Logger logger = LoggerFactory.getLogger(QueueController.class);
+    private final Logger logger = LoggerFactory.getLogger(QueueController.class);
 
     @PostConstruct
     public void init(){
@@ -62,7 +62,7 @@ public class QueueController {
      * @requires queue with the given identifier to exist
      */
     @GetMapping("/queue/getQueues")
-    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(@PathVariable final String identifier){
+    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(){
         return queueService.getQueues();
     }
 }
