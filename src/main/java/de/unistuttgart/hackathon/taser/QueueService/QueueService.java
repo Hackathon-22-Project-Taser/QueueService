@@ -8,7 +8,7 @@ import java.util.Queue;
 
 public class QueueService {
 
-    private final Map<String, Queue<Map<LocalDateTime, Vote>>> availableQueues;
+    private final Map<String, Queue<Map<LocalDateTime, Boolean>>> availableQueues;
 
     public QueueService(){
         this.availableQueues = new HashMap<>();
@@ -40,9 +40,9 @@ public class QueueService {
      * @param identifier of the queue, to store the vote
      * @param vote to be stored in the queue
      */
-    public void storeVote(final String identifier, final Vote vote) {
-        final Queue<Map<LocalDateTime, Vote>> queue = this.findQueue(identifier);
-        Map<LocalDateTime, Vote> map = new HashMap<>();
+    public void storeVote(final String identifier, final Boolean vote) {
+        final Queue<Map<LocalDateTime, Boolean>> queue = this.findQueue(identifier);
+        Map<LocalDateTime, Boolean> map = new HashMap<>();
         map.put(LocalDateTime.now(), vote);
         queue.add(map);
     }
@@ -52,7 +52,7 @@ public class QueueService {
      * @param identifier of the queue
      * @return queue with the specified queue
      */
-    private Queue<Map<LocalDateTime, Vote>> findQueue(final String identifier) {
+    private Queue<Map<LocalDateTime, Boolean>> findQueue(final String identifier) {
         return this.availableQueues.get(identifier);
     }
 
@@ -61,7 +61,17 @@ public class QueueService {
      * @param identifier of the queue to be cleared
      */
     public void flushQueue(final String identifier) {
-        final Queue<Map<LocalDateTime, Vote>> queue = this.findQueue(identifier);
+        final Queue<Map<LocalDateTime, Boolean>> queue = this.findQueue(identifier);
         queue.clear();
     }
+
+    /**
+     * Gets all Queues
+     * @return all Queues in a Map
+     */
+    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues() {
+        return this.availableQueues;
+    }
+
+
 }

@@ -3,13 +3,13 @@ package de.unistuttgart.hackathon.taser.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * Controller for the QueueService REST-API
@@ -44,7 +44,7 @@ public class QueueController {
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/store/{identifier}")
-    public void storeVote(@PathVariable final String identifier, @RequestBody final Vote vote) {
+    public void storeVote(@PathVariable final String identifier, @RequestBody final Boolean vote) {
         queueService.storeVote(identifier, vote);
     }
 
@@ -55,5 +55,14 @@ public class QueueController {
     @PostMapping("/queue/flush/{identifier}")
     public void flushQueue(@PathVariable final String identifier){
         queueService.flushQueue(identifier);
+    }
+
+    /**
+     * Empties the queue
+     * @requires queue with the given identifier to exist
+     */
+    @GetMapping("/queue/getQueues")
+    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(@PathVariable final String identifier){
+        return queueService.getQueues();
     }
 }
