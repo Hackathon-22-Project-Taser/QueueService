@@ -13,4 +13,11 @@ public class QueueServiceTest {
         queueService.createQueue("38 0.008");
         assertTrue(queueService.isIdentifierUsed("38 0.008"));
     }
+
+    @Test
+    public void flushQueue(){
+        queueService.createQueue("38 0.008");
+        queueService.flushQueue("38 0.008");
+        assertTrue(queueService.isIdentifierUsed("38 0.008"));
+    }
 }
