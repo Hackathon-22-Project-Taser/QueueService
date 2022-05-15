@@ -74,7 +74,7 @@ public class QueueController {
      */
     @CrossOrigin(origins = "*")
     @PostMapping("/queue/store/{identifier}")
-    public void storeVote(@PathVariable final String identifier, @RequestBody final Boolean vote) {
+    public void storeVote(@PathVariable final String identifier, final Boolean vote) {
         if (!(this.queueService.isIdentifierUsed(identifier))) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Queue with ID %s doesn't exist!",
                     identifier));
