@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,7 @@ public class QueueController {
      * @param identifier of the queue to create
      * @requires no queue with given identifier exists
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("/queue/create/{identifier}")
     public void createQueue(@PathVariable final String identifier) {
         if (this.queueService.isIdentifierUsed(identifier)) {
@@ -53,6 +55,7 @@ public class QueueController {
      * @param identifier delete the specified queue
      * @requires a queue with given identifier to exist
      */
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/queue/delete/{identifier}")
     public void deleteQueue(@PathVariable final String identifier) {
         if (!(this.queueService.isIdentifierUsed(identifier))) {
@@ -69,6 +72,7 @@ public class QueueController {
      * @param identifier of the room
      * @requires queue with the given identifier to exist
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("/queue/store/{identifier}")
     public void storeVote(@PathVariable final String identifier, @RequestBody final Boolean vote) {
         if (!(this.queueService.isIdentifierUsed(identifier))) {
@@ -84,6 +88,7 @@ public class QueueController {
      * @param identifier of the room to flush
      * @requires queue with the given identifier to exist
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("/queue/flush/{identifier}")
     public void flushQueue(@PathVariable final String identifier) {
         if (!(this.queueService.isIdentifierUsed(identifier))) {
@@ -97,6 +102,7 @@ public class QueueController {
     /**
      * Empties all queues
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("/queues/flush")
     public void flushQueues() {
         this.queueService.flushQueues();
@@ -105,6 +111,7 @@ public class QueueController {
     /**
      * Returns all queues
      */
+    @CrossOrigin(origins = "*")
     @GetMapping("/queue/getQueues")
     public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues() {
         return queueService.getQueues();
