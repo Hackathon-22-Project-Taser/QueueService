@@ -3,7 +3,12 @@ package de.unistuttgart.hackathon.taser.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
@@ -85,7 +90,7 @@ public class QueueController {
      * @requires queue with the given identifier to exist
      */
     @GetMapping("/queue/getQueues")
-    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues(@PathVariable final String identifier) {
+    public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues() {
         return queueService.getQueues();
     }
 }
