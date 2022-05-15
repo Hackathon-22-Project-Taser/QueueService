@@ -21,7 +21,7 @@ public class QueueService {
      */
     public void createQueue(final String identifier) {
         if (this.isIdentifierUsed(identifier)){
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("identifier is already used");
         }
         availableQueues.put(identifier, new LinkedList<>());
     }
@@ -29,7 +29,6 @@ public class QueueService {
     /**
      * Deletes a Queue paired to the given identifier
      * @param identifier of the queue to delete
-     * @requires (isIdentifierUsed)
      */
     public void deleteQueue(final String identifier) {
         if (this.isIdentifierUsed(identifier)) {
@@ -54,7 +53,7 @@ public class QueueService {
      */
     public void storeVote(final String identifier, final Boolean vote) {
         final Queue<Map<LocalDateTime, Boolean>> queue = this.findQueue(identifier);
-        Map<LocalDateTime, Boolean> map = new HashMap<>();
+        final Map<LocalDateTime, Boolean> map = new HashMap<>();
         map.put(LocalDateTime.now(), vote);
         queue.add(map);
     }
