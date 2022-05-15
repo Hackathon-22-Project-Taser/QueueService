@@ -25,69 +25,85 @@ public class QueueController {
     private QueueService queueService;
     private final Logger logger = LoggerFactory.getLogger(QueueController.class);
 
+    /**
+     * Initialize the QueueController
+     */
     @PostConstruct
     public void init() {
-        queueService = new QueueService();
+        this.queueService = new QueueService();
     }
 
     /**
-     * Creates a new Queue
-     *
+     * Creates a new queue
+     * @param identifier of the queue to create
      * @requires no queue with given identifier exists
      */
     @PostMapping("/queue/create/{identifier}")
     public void createQueue(@PathVariable final String identifier) {
-        logger.info("create Queue with identifier (queueNumber):" + identifier);
-        if (queueService.isIdentifierUsed(identifier)) {
+        if (this.queueService.isIdentifierUsed(identifier)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("Queue with ID %s already exists!",
                     identifier));
         }
-        queueService.createQueue(identifier);
+        logger.info("create queue with identifier (queueNumber):" + identifier);
+        this.queueService.createQueue(identifier);
     }
 
     /**
-     * Deletes a Queue
-     *
-     * @requires a queue with given identifier
+     * Deletes a specific queue
+     * @param identifier delete the specified queue
+     * @requires a queue with given identifier to exist
      */
     @DeleteMapping("/queue/delete/{identifier}")
     public void deleteQueue(@PathVariable final String identifier) {
-        logger.info("delete Queue with identifier (queueNumber):" + identifier);
-        queueService.deleteQueue(identifier);
+        if (!(this.queueService.isIdentifierUsed(identifier))) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Queue with ID %s doesn't exist!",
+                    identifier));
+        }
+        logger.info("delete queue with identifier (queueNumber):" + identifier);
+        this.queueService.deleteQueue(identifier);
     }
 
     /**
      * Stores a vote of a student
-     *
+     * @param vote whether a student is lost
+     * @param identifier of the room
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/store/{identifier}")
     public void storeVote(@PathVariable final String identifier, @RequestBody final Boolean vote) {
-        queueService.storeVote(identifier, vote);
+        if (!(this.queueService.isIdentifierUsed(identifier))) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Queue with ID %s doesn't exist!",
+                    identifier));
+        }
+        logger.info("store vote in queue with identifier (queueNumber):" + identifier);
+        this.queueService.storeVote(identifier, vote);
     }
 
     /**
      * Empties the queue
-     *
+     * @param identifier of the room to flush
      * @requires queue with the given identifier to exist
      */
     @PostMapping("/queue/flush/{identifier}")
     public void flushQueue(@PathVariable final String identifier) {
-        queueService.flushQueue(identifier);
+        if (!(this.queueService.isIdentifierUsed(identifier))) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Queue with ID %s doesn't exist!",
+                    identifier));
+        }
+        logger.info("empty queue with identifier (queueNumber):" + identifier);
+        this.queueService.flushQueue(identifier);
     }
 
     /**
-     * Empties the queues
+     * Empties all queues
      */
     @PostMapping("/queues/flush")
     public void flushQueues() {
-        queueService.flushQueues();
+        this.queueService.flushQueues();
     }
 
     /**
-     * Empties the queue
-     *
-     * @requires queue with the given identifier to exist
+     * Returns all queues
      */
     @GetMapping("/queue/getQueues")
     public Map<String, Queue<Map<LocalDateTime, Boolean>>> getQueues() {
